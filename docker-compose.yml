@@ -10,7 +10,7 @@ services:
         ports:
             - 3306:3306
         volumes:
-            - ./scripts:/docker-entrypoint-initdb.d
+            - shared-mariadb-volume:/var/lib/mysql
         networks:
             - shared-networks
 
@@ -24,8 +24,11 @@ services:
             TZ: Asia/Jakarta
         ports:
             - 5432:5432
+        volumes:
+            - shared-postgresql-volume:/var/lib/postgresql/data
         networks:
             - shared-networks
+            - hdi-web-accounting-networks
 
     mongodb:
         image: mongo:6.0.5
@@ -38,6 +41,8 @@ services:
             TZ: Asia/Jakarta
         ports:
             - 27017:27017
+        volumes:
+            - shared-mongodb-volume:/data/db
         networks:
             - shared-networks
 
@@ -49,8 +54,26 @@ services:
             TZ: Asia/Jakarta
         ports:
             - 6379:6379
+        volumes:
+            - shared-redis-volume:/data
         networks:
             - shared-networks
+
 networks:
     shared-networks:
+        driver: bridge
         external: true
+
+volumes:
+    shared-mariadb-volume:
+        name: shared-mariadb-volume
+        driver: local
+    shared-postgresql-volume:
+        name: shared-postgresql-volume
+        driver: local
+    shared-mongodb-volume:
+        name: shared-mongodb-volume
+        driver: local
+    shared-redis-volume:
+        name: shared-redis-volume
+        driver: local
