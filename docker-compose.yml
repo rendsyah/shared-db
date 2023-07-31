@@ -1,3 +1,5 @@
+version: '3.0'
+
 services:
     mariadb:
         image: mariadb:10.11
@@ -43,6 +45,7 @@ services:
             - 27017:27017
         volumes:
             - shared-mongodb-volume:/data/db
+            - shared-mongodb-volume:/data/configdb
         networks:
             - shared-networks
 
