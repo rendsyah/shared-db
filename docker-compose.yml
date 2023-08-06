@@ -30,7 +30,6 @@ services:
             - shared-postgresql-volume:/var/lib/postgresql/data
         networks:
             - shared-networks
-            - hdi-web-accounting-networks
 
     mongodb:
         image: mongo:6.0.5
