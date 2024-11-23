@@ -10,9 +10,10 @@ services:
         ports:
             - 3306:3306
         volumes:
-            - shared-mariadb-volume:/var/lib/mysql
+            - ./mariadb:/var/lib/mysql
         networks:
             - shared-networks
+            - ruangprint-networks
 
     postgresql:
         image: postgres:13.11
@@ -25,9 +26,10 @@ services:
         ports:
             - 5432:5432
         volumes:
-            - shared-postgresql-volume:/var/lib/postgresql/data
+            - ./postgres:/var/lib/postgresql/data
         networks:
             - shared-networks
+            - ruangprint-networks
 
     mongodb:
         image: mongo:6.0.5
@@ -35,16 +37,17 @@ services:
         restart: always
         env_file: .env
         environment:
-            MONGO_INITDB_ROOT_USERNAME: ${SERVICE_DB_USER}
-            MONGO_INITDB_ROOT_PASSWORD: ${SERVICE_DB_PASS}
+            MONGO_INITDB_ROOT_USERNAME: ${SERVICE_MONGO_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${SERVICE_MONGO_PASS}
             TZ: Asia/Jakarta
         ports:
             - 27017:27017
         volumes:
-            - shared-mongodb-volume:/data/db
-            - shared-mongodb-volume:/data/configdb
+            - ./mongodb:/data/db
+            - ./mongodb:/data/configdb
         networks:
             - shared-networks
+            - ruangprint-networks
 
     redis:
         image: redis:7.0
@@ -55,25 +58,12 @@ services:
         ports:
             - 6379:6379
         volumes:
-            - shared-redis-volume:/data
+            - ./redis:/data
         networks:
             - shared-networks
+            - ruangprint-networks
 
 networks:
     shared-networks:
         driver: bridge
         external: true
-
-volumes:
-    shared-mariadb-volume:
-        name: shared-mariadb-volume
-        driver: local
-    shared-postgresql-volume:
-        name: shared-postgresql-volume
-        driver: local
-    shared-mongodb-volume:
-        name: shared-mongodb-volume
-        driver: local
-    shared-redis-volume:
-        name: shared-redis-volume
-        driver: local
