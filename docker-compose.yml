@@ -13,7 +13,6 @@ services:
             - ./mariadb:/var/lib/mysql
         networks:
             - shared-networks
-            - ruangprint-networks
 
     postgresql:
         image: postgres:13.11
@@ -29,7 +28,6 @@ services:
             - ./postgres:/var/lib/postgresql/data
         networks:
             - shared-networks
-            - ruangprint-networks
 
     mongodb:
         image: mongo:6.0.5
@@ -47,7 +45,6 @@ services:
             - ./mongodb:/data/configdb
         networks:
             - shared-networks
-            - ruangprint-networks
 
     redis:
         image: redis:7.0
@@ -61,7 +58,6 @@ services:
             - ./redis:/data
         networks:
             - shared-networks
-            - ruangprint-networks
 
 networks:
     shared-networks:
