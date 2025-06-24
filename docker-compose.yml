@@ -1,0 +1,65 @@
+services:
+  mariadb:
+    container_name: mariadb-container
+    image: mariadb:10.11
+    ports:
+      - 3306:3306
+    env_file: .env
+    environment:
+      MARIADB_ROOT_PASSWORD: ${SERVICE_DB_PASS}
+      TZ: Asia/Jakarta
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    restart: always
+    networks:
+      - shared-networks
+
+  postgres:
+    container_name: postgres-container
+    image: postgres:13.11
+    ports:
+      - 5432:5432
+    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: ${SERVICE_DB_PASS}
+      TZ: Asia/Jakarta
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - shared-networks
+
+  mongodb:
+    container_name: mongodb-container
+    image: mongo:6.0.5
+    ports:
+      - 27017:27017
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${SERVICE_MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${SERVICE_MONGO_PASS}
+      TZ: Asia/Jakarta
+    volumes:
+      - ./mongodb:/data/db
+      - ./mongodb:/data/configdb
+    restart: always
+    networks:
+      - shared-networks
+
+  redis:
+    container_name: redis-container
+    image: redis:7.0
+    ports:
+      - 6379:6379
+    environment:
+      TZ: Asia/Jakarta
+    volumes:
+      - ./redis:/data
+    restart: always
+    networks:
+      - shared-networks
+
+networks:
+  shared-networks:
+    name: shared-networks
+    external: true
